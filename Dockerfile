@@ -1,10 +1,10 @@
-# Builder Stage
+# Етап збирання
 FROM node:16 AS builder
 WORKDIR /usr/app
 COPY ./src ./
 RUN npm ci --only=production
 
-# Final Stage
+# Фінальний етап
 FROM node:16-alpine
 ARG NODE_ENV
 WORKDIR /usr/app
