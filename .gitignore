@@ -1,0 +1,6 @@
+/_extras
+.env
+scrapper.log
+config.js
+*.db
+*.sqlite
