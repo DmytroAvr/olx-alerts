@@ -64,7 +64,8 @@ class Ad {
 
         if (this.notify) {
             try {
-                const msg = 'New ad found!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url
+                const currencySymbol = this.getCurrencySymbol()
+                const msg = 'New ad found!\n' + this.title + ' - ' + currencySymbol + this.price + '\n\n' + this.url
                 notifier.sendNotification(msg, this.id)
             } catch (error) {
                 $logger.error('Could not send a notification')
@@ -95,8 +96,9 @@ class Ad {
 
                 const decreasePercentage = Math.abs(Math.round(((this.price - this.saved.price) / this.saved.price) * 100))
 
+                const currencySymbol = this.getCurrencySymbol()
                 const msg = 'Price drop found! ' + decreasePercentage + '% OFF!\n' +
-                    'From R$' + this.saved.price + ' to R$' + this.price + '\n\n' + this.url
+                    'From ' + currencySymbol + this.saved.price + ' to ' + currencySymbol + this.price + '\n\n' + this.url
 
                 try {
                     await notifier.sendNotification(msg, this.id)
@@ -105,6 +107,16 @@ class Ad {
                 }
             }
         }
+    }
+
+    /**
+     * Визначає символ валюти на основі URL
+     */
+    getCurrencySymbol = () => {
+        if (this.url.includes('olx.ua')) {
+            return '₴'  // Гривня для OLX.ua
+        }
+        return 'R$'     // Реал для OLX Бразилія (за замовчуванням)
     }
 
     // some elements found in the ads selection don't have an url
